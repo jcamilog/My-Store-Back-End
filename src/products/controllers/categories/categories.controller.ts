@@ -13,7 +13,9 @@ import {
 import { CreateCategoryDto } from './../../dtos/category.dto';
 import { CategoriesService } from '../../services/categories/categories.service';
 import { MongoIdPipe } from './../../../common/mongo-id/mongo-id.pipe';
+import { JwtAuthGuard } from '../../../auth/guards/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('categories')
 export class CategoriesController {
     constructor(

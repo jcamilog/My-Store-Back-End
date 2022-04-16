@@ -13,6 +13,7 @@ import { DatabaseModule } from './database/database.module';
 import config from './config';
 import { enviroments } from './enviroments';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { UsersModule } from './users/users.module';
       JWT_SECRET: Joi.string().required(),
       DATABASE_PORT: Joi.number().required(),
     }),
-  }),ProductsModule, CompanyModule, DatabaseModule, UsersModule],
+  }),ProductsModule, CompanyModule, DatabaseModule, UsersModule, AuthModule],
   controllers: [AppController],
   providers: [AppService],
 })

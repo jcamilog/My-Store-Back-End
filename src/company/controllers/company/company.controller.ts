@@ -7,24 +7,32 @@ import {
     Body, 
     Put, 
     Delete,
-    UseGuards,  
+    UseGuards,
 } from '@nestjs/common';
 
 import { CreateCompanyDto, UpdateCompanyDto } from './../../dtos/company.dto';
 import { CompanyService } from '../../services/company/company.service';
 import { MongoIdPipe } from './../../../common/mongo-id/mongo-id.pipe';
+import { JwtAuthGuard } from '../../../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../../../auth/guards/roles.guard';
+import { Public } from '../../../auth/decoractors/public.decoractor';
+import { Roles } from '../../../auth/decoractors/roles.decorator';
+import { Role } from '../../../auth/models/roles.model';
 
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('company')
 export class CompanyController {
     constructor(
         private companyService: CompanyService
     ) {}
 
+    @Public()
     @Get()
     findAll() {
         return this.companyService.findAll();
     }
 
+    @Public()
     @Get(':companyId')
     getCompany(
         @Param('companyId', MongoIdPipe) idCompany: string
@@ -32,6 +40,7 @@ export class CompanyController {
         return this.companyService.findOne(idCompany);
     }
 
+    @Public()
     @Post()
     createCompany(
         @Body() payload: CreateCompanyDto
@@ -39,6 +48,7 @@ export class CompanyController {
         return this.companyService.create(payload);
     }
 
+    @Roles(Role.ADMIN,Role.SPADMIN)
     @Put(':companyId')
     update(
         @Param('companyId', MongoIdPipe) idCOmpany: string,
@@ -47,6 +57,7 @@ export class CompanyController {
         return this.companyService.update(idCOmpany, payload);
     }
 
+    @Roles(Role.SPADMIN)
     @Delete(':companyId')
     delare(
         @Param('companyId', MongoIdPipe) idCompany: string
@@ -54,6 +65,7 @@ export class CompanyController {
         return this.companyService.remove(idCompany);
     }
 
+    @Public()
     @Get(':companyId/products')
     productsForCompany(
         @Param('companyId', MongoIdPipe) idCompany: string

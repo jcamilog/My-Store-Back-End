@@ -15,13 +15,13 @@ export class UsersService {
         const user = await this.userModel.find().exec()
         if(user.length > 0) {
             return {
-                message: 'Available products',
+                message: 'Available users',
                 moreData: true,
                 result: user
             }
         } else {
             return {
-                message: 'You have no products available',
+                message: 'You have no users available',
                 moreData: false,
                 result: user
             }
@@ -30,7 +30,7 @@ export class UsersService {
     async create(payload: CreateUserDto) {
         const users: any = await this.findAll();
         const userForCompany = users.result.filter(item => payload.idCompany === item.idCompany)
-        if(userForCompany.length >= 10) {
+        if(userForCompany.length >= 5) {
             throw new NotFoundException(`You have no more licenses available`)
         }
         const user = new this.userModel(payload);
@@ -54,5 +54,16 @@ export class UsersService {
             message: 'users by company',
             result: userCompany
         } 
+    }
+    async findByEmail(email: string) {
+        const user = await this.userModel.findOne({email}).exec();
+        return user;
+    }
+    removeUser( id: string ) {
+        const user = this.userModel.findByIdAndDelete(id);
+        return {
+            message: 'user removed',
+            response : user
+        }
     }
 }

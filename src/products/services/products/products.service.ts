@@ -63,7 +63,7 @@ export class ProductsService {
     }
     async topProducts() {
         const products: any = await this.findAll();
-        let top = []
+        let top: CreateProductDto[] = [];
         products.result.map(item => {
             if(item.qualification > 4) {
                 top.push(item)
