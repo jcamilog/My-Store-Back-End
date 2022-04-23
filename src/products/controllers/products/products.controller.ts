@@ -9,6 +9,8 @@ import {
     Delete,
     UseGuards,  
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+
 import { CreateProductDto } from 'src/products/dtos/products.dto';
 
 import { ProductsService } from './../../services/products/products.service';
@@ -19,6 +21,7 @@ import { Public } from '../../../auth/decoractors/public.decoractor';
 import { Roles } from '../../../auth/decoractors/roles.decorator';
 import { Role } from '../../../auth/models/roles.model';
 
+@ApiTags('Products')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('products')
 export class ProductsController {

@@ -9,6 +9,7 @@ import {
     Delete,
     UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { CreateCompanyDto, UpdateCompanyDto } from './../../dtos/company.dto';
 import { CompanyService } from '../../services/company/company.service';
@@ -20,6 +21,7 @@ import { Roles } from '../../../auth/decoractors/roles.decorator';
 import { Role } from '../../../auth/models/roles.model';
 import { ProductsService } from '../../../products/services/products/products.service';
 
+@ApiTags('Company')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('company')
 export class CompanyController {

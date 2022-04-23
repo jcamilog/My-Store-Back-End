@@ -9,6 +9,7 @@ import {
     Delete,
     UseGuards,  
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 
 import { CreateCategoryDto } from './../../dtos/category.dto';
 import { CategoriesService } from '../../services/categories/categories.service';
@@ -20,6 +21,7 @@ import { Public } from '../../../auth/decoractors/public.decoractor';
 import { Roles } from '../../../auth/decoractors/roles.decorator';
 import { Role } from '../../../auth/models/roles.model';
 
+@ApiTags('Categories')
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('categories')
 export class CategoriesController {
