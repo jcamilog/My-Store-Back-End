@@ -28,12 +28,15 @@ export class UsersService {
         }
     }
     async create(payload: CreateUserDto) {
-        const users: any = await this.findAll();
-        const userForCompany = users.result.filter(item => payload.idCompany === item.idCompany)
-        if(userForCompany.length >= 5) {
+        const userByCompany = await this.usersByCompany(payload.idCompany);
+        if(userByCompany.result.length >= 5) {
             throw new NotFoundException(`You have no more licenses available`)
         }
-        const user = new this.userModel(payload);
+        const dataUser = {
+            ...payload,
+            rol: 'admin'
+        }
+        const user = new this.userModel(dataUser);
         const model = await user.save();
         const {password, ...rta} = model.toJSON() 
         return {
@@ -41,15 +44,8 @@ export class UsersService {
             response: rta
         }
     }
-    async usersByCompany(id: string) {
-        const users: any = await this.findAll();
-        const userCompany = users.result.filter(item => id === item.idCompany);
-        if(userCompany.lenght < 0){
-            return {
-                message: 'Not users by company',
-                result: userCompany
-            }
-        }
+    async usersByCompany(idCompany: string) {
+        const userCompany = await this.userModel.find({idCompany});
         return {
             message: 'users by company',
             result: userCompany

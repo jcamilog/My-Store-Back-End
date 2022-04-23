@@ -2,9 +2,8 @@ import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 
 @Schema()
-
 export class Category extends Document {
-    @Prop({ required: true })
+    @Prop({ required: true, unique: true })
     name: string;
 
     @Prop({ required: true })

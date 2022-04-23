@@ -18,12 +18,14 @@ import { RolesGuard } from '../../../auth/guards/roles.guard';
 import { Public } from '../../../auth/decoractors/public.decoractor';
 import { Roles } from '../../../auth/decoractors/roles.decorator';
 import { Role } from '../../../auth/models/roles.model';
+import { ProductsService } from '../../../products/services/products/products.service';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('company')
 export class CompanyController {
     constructor(
-        private companyService: CompanyService
+        private companyService: CompanyService,
+        private productsService: ProductsService
     ) {}
 
     @Public()
@@ -67,9 +69,9 @@ export class CompanyController {
 
     @Public()
     @Get(':companyId/products')
-    productsForCompany(
+    productsByCompany(
         @Param('companyId', MongoIdPipe) idCompany: string
     ){
-        return this.companyService.productsForCompany(idCompany);
+        return this.productsService.filterProductsByCompany(idCompany);
     }
 }

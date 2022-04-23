@@ -35,5 +35,9 @@ export class CreateCompanyDto {
     @IsNotEmpty()
     @IsBoolean()
     readonly internationalDeliveries: boolean;
+
+    @IsNotEmpty()
+    @IsBoolean()
+    readonly isActive: boolean;
 }
 export class UpdateCompanyDto extends PartialType(CreateCompanyDto) {}

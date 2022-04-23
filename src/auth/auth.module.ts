@@ -9,6 +9,7 @@ import { localStrategy } from './strategies/local.strategy';
 import { jwtStrategy } from './strategies/jwt.strategy';
 
 import { UsersModule } from '../users/users.module';
+import { CompanyModule } from '../company/company.module';
 import config from '../config';
 
 @Module({
@@ -25,7 +26,8 @@ import config from '../config';
           }
         }
       }
-    })
+    }),
+    CompanyModule
   ],
   controllers: [AuthController],
   providers: [

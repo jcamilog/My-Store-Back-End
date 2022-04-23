@@ -11,7 +11,6 @@ import { ProductsService } from './../../services/products/products.service';
 export class CategoriesService {
     constructor(
         @InjectModel(Category.name) private categoryModel: Model<Category>,
-        private productsService: ProductsService
     ) {}
     async findAll() {
         const category = await this.categoryModel.find().exec();
@@ -27,23 +26,6 @@ export class CategoriesService {
                 message: 'You have no categories available',
                 moreData: false,
                 result: category
-            }
-        }
-    }
-    async productForCategory (id: string) {
-        const product: any = await this.productsService.findAll();
-        const productForCategory = product.result.filter(item => id === item.idCategory);
-        if(productForCategory.length > 0) {
-            return {
-                message: 'Available Category',
-                moreData: true,
-                result: productForCategory
-            }
-        } else {
-            return {
-                message: 'You have no products in this category available',
-                moreData: false,
-                result: productForCategory
             }
         }
     }

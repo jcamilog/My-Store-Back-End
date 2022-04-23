@@ -3,10 +3,10 @@ import { Document, Types } from 'mongoose';
 
 @Schema()
 export class Company extends Document {
-    @Prop({required: true})
+    @Prop({required: true, unique: true})
     name: string;
 
-    @Prop({required: true,})
+    @Prop({required: true, unique: true})
     nit: string;
 
     @Prop()
@@ -22,6 +22,9 @@ export class Company extends Document {
     description: string;
 
     @Prop({required: true})
-    internationalDeliveries: boolean
+    internationalDeliveries: boolean;
+
+    @Prop({required: true})
+    isActive: boolean;
 }
 export const CompanySchema = SchemaFactory.createForClass(Company);

@@ -14,9 +14,12 @@ import { CreateProductDto } from 'src/products/dtos/products.dto';
 import { ProductsService } from './../../services/products/products.service';
 import { MongoIdPipe } from './../../../common/mongo-id/mongo-id.pipe';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../../../auth/guards/roles.guard';
 import { Public } from '../../../auth/decoractors/public.decoractor';
+import { Roles } from '../../../auth/decoractors/roles.decorator';
+import { Role } from '../../../auth/models/roles.model';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('products')
 export class ProductsController {
     constructor(
@@ -43,6 +46,7 @@ export class ProductsController {
         return this.productsService.findOne(idProduct)
     }
 
+    @Public()
     @Post()
     createProduct(
         @Body() payload: CreateProductDto
@@ -50,6 +54,7 @@ export class ProductsController {
         return this.productsService.create(payload)
     }
 
+    @Roles(Role.ADMIN)
     @Put(':productId')
     update(
         @Param('productId', MongoIdPipe) productId: string,
@@ -58,6 +63,7 @@ export class ProductsController {
         return this.productsService.update(productId, payload)
     }
 
+    @Roles(Role.ADMIN)
     @Delete(':productId')
     delete(
         @Param('productId', MongoIdPipe) productId: string

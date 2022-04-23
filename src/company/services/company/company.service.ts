@@ -19,7 +19,7 @@ export class CompanyService {
         return company;
     }
 
-    async findOne(id: string) {
+    async findOne(id: any) {
         const company = await this.companyModel.findById(id).exec();
         if(!company) {
             throw new NotFoundException(`Compnay ${id} not found `);
@@ -51,13 +51,5 @@ export class CompanyService {
     
     remove(id: string) {
         return this.companyModel.findByIdAndDelete(id);
-    }
-    async productsForCompany(id: string) {
-        const products: any = await this.productsService.findAll();
-        const productsForCompany = products.result.filter(item => id === item.idCompany);
-        return {
-            message: 'productos',
-            result: productsForCompany
-        }
     }
 }

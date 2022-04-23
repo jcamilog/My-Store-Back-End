@@ -5,7 +5,7 @@ import { Company } from '../../company/entities/company.entity';
 
 @Schema()
 export class User extends Document {
-    @Prop({ required: true})
+    @Prop({ required: true, unique: true})
     email: string;
 
     @Prop({required: true})
@@ -14,7 +14,5 @@ export class User extends Document {
     @Prop({required: true, type: Types.ObjectId, ref: Company.name })
     idCompany: Company | Types.ObjectId;
 
-    @Prop({required: true})
-    rol: string;
 }
 export const UserSchema = SchemaFactory.createForClass(User);

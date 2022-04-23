@@ -23,10 +23,6 @@ export class CreateUserDto {
     @IsNotEmpty()
     readonly idCompany: string;
 
-    @IsString()
-    @IsNotEmpty()
-    readonly rol: string;
-
 }
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {}

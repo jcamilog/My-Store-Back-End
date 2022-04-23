@@ -7,7 +7,8 @@ import {
     Body, 
     Put, 
     Delete,
-    UseGuards,  
+    UseGuards,
+    Headers
 } from '@nestjs/common';
 
 import { CreateUserDto } from '../../dtos/user.dto';
@@ -28,7 +29,8 @@ export class UsersController {
 
     @Roles(Role.SPADMIN)
     @Get()
-    getUsers(){
+    getUsers(
+    ){
         return this.usersService.findAll()
     }
 
@@ -41,7 +43,6 @@ export class UsersController {
     }
     
     @Roles(Role.ADMIN, Role.SPADMIN)
-    @Public()
     @Get('byCompany')
     usersByCompany(
         @Query('company', MongoIdPipe) idCompany: string

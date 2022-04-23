@@ -39,12 +39,16 @@ export class ProductsService {
         return product;
     }
 
-    create(payload: CreateProductDto) {
+    async create(payload: CreateProductDto) {
+        console.log(payload);
+        
         const newProduct =  new this.productModel(payload)
         console.log(newProduct);
+        const rta =  await newProduct.save();
+        console.log(rta);
         return {
             message: 'The product was created successfully',
-            result: newProduct.save()
+            result: rta
         };
     }
 
@@ -56,11 +60,11 @@ export class ProductsService {
             throw new NotFoundException(`Product ${id} not found `)
         }
         return product;
-    }
+    };
 
     remove(id: string) {
         return this.productModel.findByIdAndDelete(id);
-    }
+    };
     async topProducts() {
         const products: any = await this.findAll();
         let top: CreateProductDto[] = [];
@@ -69,6 +73,27 @@ export class ProductsService {
                 top.push(item)
             }
         })
-        return top
+        return top;
+    };
+    async filterProductsByCompany(idCompany: string) {
+        const prodts = await this.productModel.find({idCompany});
+        return prodts;
+    };
+    async filterProductsByCategory(idCategory: string) {
+        const products = await this.productModel.find({idCategory});
+        
+        if(products.length > 0) {
+            return {
+                message: 'Available Category',
+                moreData: true,
+                result: products
+            }
+        } else {
+            return {
+                message: 'You have no products in this category available',
+                moreData: false,
+                result: products
+            }
+        }
     }
 }
