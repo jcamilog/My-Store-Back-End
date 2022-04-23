@@ -45,11 +45,20 @@ export class UsersController {
     }
     
     @Roles(Role.ADMIN, Role.SPADMIN)
-    @Get('byCompany')
+    @Get(':companyId/byCompany')
     usersByCompany(
-        @Query('company', MongoIdPipe) idCompany: string
+        @Param('idCompany', MongoIdPipe) idCompany: string
     ){
-        return this.usersService.usersByCompany(idCompany)
+        return this.usersService.usersByCompany(idCompany);
+    }
+
+    @Roles(Role.ADMIN)
+    @Put(':idUser')
+    update(
+        @Param('idUser', MongoIdPipe) idUser: string,
+        @Body() payload: any
+    ) {
+        return this.usersService.updateUser(idUser, payload);
     }
 
     @Roles(Role.ADMIN, Role.SPADMIN)

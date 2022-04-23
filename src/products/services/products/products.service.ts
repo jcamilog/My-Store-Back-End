@@ -40,12 +40,8 @@ export class ProductsService {
     }
 
     async create(payload: CreateProductDto) {
-        console.log(payload);
-        
         const newProduct =  new this.productModel(payload)
-        console.log(newProduct);
         const rta =  await newProduct.save();
-        console.log(rta);
         return {
             message: 'The product was created successfully',
             result: rta

@@ -55,6 +55,18 @@ export class UsersService {
         const user = await this.userModel.findOne({email}).exec();
         return user;
     }
+    updateUser(id: string, changes: any) {
+        const user = this.userModel
+        .findByIdAndUpdate(id, {$set: changes }, { new: true })
+        .exec();
+        if(!user) {
+            throw new NotFoundException(`User ${id} not found `)
+        }
+        return {
+            message: 'User update',
+            user
+        };
+    }
     removeUser( id: string ) {
         const user = this.userModel.findByIdAndDelete(id);
         return {

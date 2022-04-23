@@ -3,7 +3,6 @@ import {
     IsNotEmpty, 
     IsMongoId,
     IsEmail,
-    IsOptional,
 } from 'class-validator';
 import { PartialType } from '@nestjs/swagger';
 
