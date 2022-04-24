@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-import { CreateProductDto } from 'src/products/dtos/products.dto';
+import { CreateProductDto, FilterProductsDto } from '../../../products/dtos/products.dto';
 
 import { ProductsService } from './../../services/products/products.service';
 import { MongoIdPipe } from './../../../common/mongo-id/mongo-id.pipe';
@@ -31,8 +31,10 @@ export class ProductsController {
 
     @Public()
     @Get()
-    getProducts() {
-        return this.productsService.findAll()
+    getProducts(
+        @Query() params: FilterProductsDto
+    ) {
+        return this.productsService.findAll(params)
     }
 
     @Public()

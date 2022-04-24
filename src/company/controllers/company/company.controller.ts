@@ -20,6 +20,7 @@ import { Public } from '../../../auth/decoractors/public.decoractor';
 import { Roles } from '../../../auth/decoractors/roles.decorator';
 import { Role } from '../../../auth/models/roles.model';
 import { ProductsService } from '../../../products/services/products/products.service';
+import { FilterProductsDto } from '../../../products/dtos/products.dto';
 
 @ApiTags('Company')
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -72,8 +73,9 @@ export class CompanyController {
     @Public()
     @Get(':companyId/products')
     productsByCompany(
-        @Param('companyId', MongoIdPipe) idCompany: string
+        @Param('companyId', MongoIdPipe) idCompany: string,
+        @Query() params: FilterProductsDto
     ){
-        return this.productsService.filterProductsByCompany(idCompany);
+        return this.productsService.filterProductsByCompany(idCompany, params);
     }
 }

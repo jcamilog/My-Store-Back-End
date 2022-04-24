@@ -4,7 +4,9 @@ import {
     IsNotEmpty, 
     IsPositive,
     IsMongoId,
-    IsNumber, 
+    IsNumber,
+    IsOptional,
+    Min, 
 } from 'class-validator';
 import { PartialType } from '@nestjs/swagger';
 
@@ -47,3 +49,18 @@ export class CreateProductDto {
     readonly qualification: number;
 }
 export class UpdateProductDto extends PartialType(CreateProductDto)  {}
+
+export class FilterProductsDto {
+    
+    @IsNotEmpty()
+    @IsPositive()
+    limit: number;
+    
+    @IsNotEmpty()
+    @Min(0)
+    offset: number;
+    
+    @IsOptional()
+    @IsString()
+    name: string
+}

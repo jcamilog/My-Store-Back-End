@@ -20,6 +20,7 @@ import { ProductsService } from '../../services/products/products.service';
 import { Public } from '../../../auth/decoractors/public.decoractor';
 import { Roles } from '../../../auth/decoractors/roles.decorator';
 import { Role } from '../../../auth/models/roles.model';
+import { FilterProductsDto } from '../../dtos/products.dto';
 
 @ApiTags('Categories')
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -39,9 +40,10 @@ export class CategoriesController {
     @Public()
     @Get(':categoryId/products')
     productsForCategory(
-        @Param('categoryId', MongoIdPipe) idCategory: string
+        @Param('categoryId', MongoIdPipe) idCategory: string,
+        @Query() params: FilterProductsDto
     ) {
-        return this.productsService.filterProductsByCategory(idCategory);
+        return this.productsService.filterProductsByCategory(idCategory, params);
     }
 
     @Public()

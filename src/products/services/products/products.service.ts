@@ -4,17 +4,25 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, FilterQuery } from 'mongoose';
 
 import { Product } from '../../entities/products.entity';
-import { CreateProductDto } from '../../dtos/products.dto';
+import { CreateProductDto, FilterProductsDto } from '../../dtos/products.dto';
+import { ProductModel } from '../../models/product.model';
 
 @Injectable()
 export class ProductsService {
     constructor(
         @InjectModel(Product.name) private productModel: Model<Product>,
     ) {}
-    async findAll() {
-        const product: any = await this.productModel.find()
+    async findAll(params?: FilterProductsDto) {
+        const {limit, offset, name} = params;
+        const filters: FilterQuery<Product> = {};
+        if(name !== '') {
+            filters.name = name
+        }
+        const product: ProductModel[] = await this.productModel.find(filters)
         .populate('idCompany')
         .populate('idCategory')
+        .skip(offset)
+        .limit(limit)
         .exec();
         if(product.length > 0) {
             return {
@@ -32,7 +40,7 @@ export class ProductsService {
     }
 
     async findOne(id: string) {
-        const product = await this.productModel.findById(id).exec()
+        const product: ProductModel = await this.productModel.findById(id).exec()
         if(!product) {
             throw new NotFoundException(`Product ${id} not found `)
         }
@@ -71,13 +79,42 @@ export class ProductsService {
         })
         return top;
     };
-    async filterProductsByCompany(idCompany: string) {
-        const prodts = await this.productModel.find({idCompany});
-        return prodts;
+    async filterProductsByCompany(idCompany: string, params: FilterProductsDto) {
+        const {limit, offset, name} = params;
+        const filters: FilterQuery<Product> = {};
+        filters.idCompany = idCompany;
+        if(name !== '') {
+            filters.name = name
+        }
+        const products = await this.productModel.find(filters)
+        .skip(offset)
+        .limit(limit)
+        .exec();
+        if(products.length > 0) {
+            return {
+                message: 'Available Category',
+                moreData: true,
+                result: products
+            }
+        } else {
+            return {
+                message: 'You have no products in this category available',
+                moreData: false,
+                result: products
+            }
+        }
     };
-    async filterProductsByCategory(idCategory: string) {
-        const products = await this.productModel.find({idCategory});
-        
+    async filterProductsByCategory(idCategory: string, params: FilterProductsDto) {
+        const {limit, offset, name} = params;
+        const filters: FilterQuery<Product> = {};
+        filters.idCategory = idCategory;
+        if(name !== '') {
+            filters.name = name
+        }
+        const products = await this.productModel.find(filters)
+        .skip(offset)
+        .limit(limit)
+        .exec();
         if(products.length > 0) {
             return {
                 message: 'Available Category',
